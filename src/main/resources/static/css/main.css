@@ -1,0 +1,38 @@
+body {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #333;
+    background-color: #f2f2f2;
+}
+
+section {
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+.container {
+    max-width: 800px;
+}
+
+input,
+textarea {
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+textarea {
+    min-height: 150px;
+}
+
+button {
+    margin-top: 20px;
+}
+
+h1.title {
+    color: #ffffff;
+}
+
+tr.employee-row:hover {
+    background-color: #f5f5f5;
+}

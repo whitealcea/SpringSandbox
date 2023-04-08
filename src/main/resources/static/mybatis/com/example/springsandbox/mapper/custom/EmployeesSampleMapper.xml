@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springsandbox.mapper.custom.EmployeesSampleMapper">
+    <select id="findAllEmployees" resultType="com.example.springsandbox.entity.custom.EmployeeSample">
+        select e.*, d.department_name from employees e inner join departments d on e.department_id = d.id;
+    </select>
+</mapper>
