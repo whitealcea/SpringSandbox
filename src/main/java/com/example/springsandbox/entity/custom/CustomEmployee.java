@@ -1,11 +1,9 @@
-package com.example.springsandbox.dto;
+package com.example.springsandbox.entity.custom;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
-public class HelloDto {
+public class CustomEmployee {
     /**
      * 従業員ID
      **/
