@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>勤怠管理システム</title>
+    <title>勤怠管理システム - 部署一覧</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
     <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
 <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
-        <a class="navbar-item" href="#">
+        <a class="navbar-item" href="/">
             <h1 class="title is-4">勤怠管理システム</h1>
         </a>
 
@@ -22,7 +22,7 @@
 
     <div id="navbarBasicExample" class="navbar-menu">
         <div class="navbar-start">
-            <a class="navbar-item is-active" href="/">
+            <a class="navbar-item" href="/">
                 ホーム
             </a>
 
@@ -34,7 +34,7 @@
                 従業員一覧
             </a>
 
-            <a class="navbar-item" href="/department">
+            <a class="navbar-item is-active" href="/department">
                 部署一覧
             </a>
         </div>
@@ -53,10 +53,26 @@
 
 <section class="section">
     <div class="container">
-        <h2 class="title is-2">ホーム</h2>
-        <p>ようこそ、勤怠管理システムへ！</p>
-        <p>このシステムは、社員の勤怠管理を簡単かつ効率的に行うことができるシステムです。</p>
-        <p>ログインして、勤怠情報の入力や確認を行いましょう。</p>
+        <h2 class="title is-2">部署一覧</h2>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>部署名</th>
+                <th>部署番号</th>
+                <th>上司の名前</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="department : ${departments}" th:data-id="${department.id}" class="department-row">
+                <td th:text="${department.id}"></td>
+                <td th:text="${department.departmentName}"></td>
+                <td th:text="${department.departmentNumber}"></td>
+                <td th:text="${department.supervisorName}"></td>
+
+            </tr>
+            </tbody>
+        </table>
     </div>
 </section>
 
@@ -71,7 +87,8 @@
     document
         .addEventListener('DOMContentLoaded', () => {
             // クリックイベントでメニューを開閉
-            const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+            const $navbarBurgers = Array.prototype.slice.call
+            (document.querySelectorAll('.navbar-burger'), 0);
             if ($navbarBurgers.length > 0) {
                 $navbarBurgers.forEach($el => {
                     $el.addEventListener('click', () => {
@@ -79,6 +96,16 @@
                         const $target = document.getElementById(target);
                         $el.classList.toggle('is-active');
                         $target.classList.toggle('is-active');
+                    });
+                });
+            }
+            // 従業員一覧の行をクリックして従業員情報ページに遷移
+            const $employeeRows = Array.prototype.slice.call(document.querySelectorAll('.employee-row'), 0);
+            if ($employeeRows.length > 0) {
+                $employeeRows.forEach($el => {
+                    $el.addEventListener('click', () => {
+                        const employeeId = $el.getAttribute('data-id');
+                        window.location.href = '/employee/' + employeeId;
                     });
                 });
             }
