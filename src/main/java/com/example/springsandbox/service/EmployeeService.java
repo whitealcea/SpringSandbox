@@ -23,4 +23,10 @@ public class EmployeeService {
         List<CustomEmployee> allEmployees = sampleMapper.findAllEmployees();//Select
         return allEmployees.stream().map(employee -> modelMapper.map(employee, EmployeeDto.class)).collect(Collectors.toList());
     }
+
+    public EmployeeDto getEmployeeDetail(Integer employeeId) {
+        CustomEmployee employee = sampleMapper.findEmployeeById(employeeId);
+        return modelMapper.map(employee, EmployeeDto.class);
+    }
+
 }
