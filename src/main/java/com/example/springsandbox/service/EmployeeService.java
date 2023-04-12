@@ -1,7 +1,9 @@
 package com.example.springsandbox.service;
 
 import com.example.springsandbox.dto.EmployeeDto;
+import com.example.springsandbox.entity.Employees;
 import com.example.springsandbox.entity.custom.CustomEmployee;
+import com.example.springsandbox.mapper.EmployeesMapper;
 import com.example.springsandbox.mapper.custom.CustomEmployeesMapper;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
@@ -14,6 +16,8 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class EmployeeService {
+    @NonNull
+    private EmployeesMapper employeesMapper;
     @NonNull
     private CustomEmployeesMapper customEmployeeMapper;
     @NonNull
@@ -29,4 +33,8 @@ public class EmployeeService {
         return modelMapper.map(employee, EmployeeDto.class);
     }
 
+    public void saveEmployee(EmployeeDto dto) {
+        Employees entity = modelMapper.map(dto, Employees.class);
+        employeesMapper.insertEmployee(entity);
+    }
 }

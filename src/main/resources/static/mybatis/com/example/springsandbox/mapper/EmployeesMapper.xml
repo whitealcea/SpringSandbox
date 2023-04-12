@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.springsandbox.mapper.EmployeesMapper">
+    <insert id="insertEmployee" parameterType="com.example.springsandbox.entity.Employees">
+        insert into employees (name, address, phone_number, email, department_id) values (#{name}, #{address}, #{phoneNumber}, #{email}, #{departmentId});
+    </insert>
     <select id="findAllEmployees" resultType="com.example.springsandbox.entity.Employees">
         select * from employees;
     </select>
