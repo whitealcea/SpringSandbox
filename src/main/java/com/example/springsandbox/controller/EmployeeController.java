@@ -22,16 +22,8 @@ public class EmployeeController {
 
     @RequestMapping("/{employeeId}")
     public String employee(@PathVariable Integer employeeId, Model model) {
-        // TODO: employeeId を利用して社員情報を取得して画面に返却する
-        //  EmployeeDto emp = employeeService.findEmployeeById(employeeId);
-
-        // FIXME: employeeId が取得できていることを確認できたら削除する
-        log.info("EmployeeId を取得：{}", employeeId);
-
         EmployeeDto employee = employeeService.getEmployeeDetail(employeeId);
         model.addAttribute("employee", employee);
-
-        // TODO: employee.html を用意する
         return "employees/detail";
     }
 
