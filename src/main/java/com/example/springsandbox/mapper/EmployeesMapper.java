@@ -7,5 +7,8 @@ import java.util.List;
 
 @Mapper
 public interface EmployeesMapper {
+
+    void insertEmployee(Employees employees);
+
     List<Employees> findAllEmployees();
 }
