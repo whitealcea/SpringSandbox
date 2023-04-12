@@ -4,4 +4,10 @@
     <select id="findAllEmployees" resultType="com.example.springsandbox.entity.custom.CustomEmployee">
         select e.*, d.department_name from employees e inner join departments d on e.department_id = d.id;
     </select>
+    <select id="findEmployeeById" parameterType="Integer"
+            resultType="com.example.springsandbox.entity.custom.CustomEmployee">
+        select e.id, e.name, e.address, e.phone_number, e.email, e.department_id,
+        d.department_name from employees e inner join departments d on e.department_id = d.id
+        where e.id = #{employeeId};
+    </select>
 </mapper>
