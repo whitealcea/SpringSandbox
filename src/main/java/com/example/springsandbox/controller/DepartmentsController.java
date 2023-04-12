@@ -1,9 +1,7 @@
 package com.example.springsandbox.controller;
 
 import com.example.springsandbox.dto.DepartmentDto;
-import com.example.springsandbox.dto.EmployeeDto;
 import com.example.springsandbox.service.DepartmentsService;
-import com.example.springsandbox.service.EmployeeService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

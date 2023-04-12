@@ -100,12 +100,12 @@
                 });
             }
             // 従業員一覧の行をクリックして従業員情報ページに遷移
-            const $employeeRows = Array.prototype.slice.call(document.querySelectorAll('.employee-row'), 0);
-            if ($employeeRows.length > 0) {
-                $employeeRows.forEach($el => {
+            const $departmentRows = Array.prototype.slice.call(document.querySelectorAll('.department-row'), 0);
+            if ($departmentRows.length > 0) {
+                $departmentRows.forEach($el => {
                     $el.addEventListener('click', () => {
-                        const employeeId = $el.getAttribute('data-id');
-                        window.location.href = '/employee/' + employeeId;
+                        const departmentId = $el.getAttribute('data-id');
+                        window.location.href = '/department/' + departmentId;
                     });
                 });
             }
