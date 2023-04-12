@@ -15,17 +15,17 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class EmployeeService {
     @NonNull
-    private CustomEmployeesMapper sampleMapper;
+    private CustomEmployeesMapper customEmployeeMapper;
     @NonNull
     private ModelMapper modelMapper;
 
     public List<EmployeeDto> getEmployeeList() {
-        List<CustomEmployee> allEmployees = sampleMapper.findAllEmployees();//Select
+        List<CustomEmployee> allEmployees = customEmployeeMapper.findAllEmployees();//Select
         return allEmployees.stream().map(employee -> modelMapper.map(employee, EmployeeDto.class)).collect(Collectors.toList());
     }
 
     public EmployeeDto getEmployeeDetail(Integer employeeId) {
-        CustomEmployee employee = sampleMapper.findEmployeeById(employeeId);
+        CustomEmployee employee = customEmployeeMapper.findEmployeeById(employeeId);
         return modelMapper.map(employee, EmployeeDto.class);
     }
 
