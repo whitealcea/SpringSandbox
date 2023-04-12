@@ -8,4 +8,6 @@ import java.util.List;
 @Mapper
 public interface CustomEmployeesMapper {
     List<CustomEmployee> findAllEmployees();
+
+    CustomEmployee findEmployeeById(Integer employeeId);
 }
