@@ -1,9 +1,9 @@
-package com.example.springsandbox.entity;
+package com.example.springsandbox.form;
 
 import lombok.Data;
 
 @Data
-public class Departments {
+public class DepartmentForm {
     /**
      * 部署ID
      **/
@@ -20,8 +20,5 @@ public class Departments {
      * 上司の名前
      **/
     private String supervisorName;
-    /**
-     * 従業員の名前
-     **/
-    private Integer employeeId;
+
 }

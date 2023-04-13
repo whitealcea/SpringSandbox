@@ -26,4 +26,9 @@ public class DepartmentDto {
      * 所属する人数
      **/
     private Integer departmentPeople;
+    /**
+     * 従業員の名前
+     **/
+    private Integer employeeId;
+
 }
