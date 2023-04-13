@@ -21,14 +21,10 @@ public class DepartmentsController {
     private DepartmentsService departmentService;
 
     @RequestMapping("/{departmentId}")
-    public String department(@PathVariable String departmentId) {
-        // TODO: departmentId を利用して社員情報を取得して画面に返却する
-        //  DepartmentDto emp = departmentService.findDepartmentById(departmentId);
-
-        // FIXME: departmentId が取得できていることを確認できたら削除する
-        log.info("DepartmentId を取得：{}", departmentId);
-        // TODO: department.html を用意する
-        return "department";
+    public String department(@PathVariable Integer departmentId, Model model) {
+        DepartmentDto department = departmentService.getDepartmentDetail(departmentId);
+        model.addAttribute("department", department);
+        return "departments/detail";
     }
 
     @RequestMapping
