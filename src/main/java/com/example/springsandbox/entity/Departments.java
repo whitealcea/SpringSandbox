@@ -2,6 +2,9 @@ package com.example.springsandbox.entity;
 
 import lombok.Data;
 
+/**
+ * 部署 Entityクラス
+ */
 @Data
 public class Departments {
     /**

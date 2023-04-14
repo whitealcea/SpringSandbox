@@ -3,6 +3,9 @@ package com.example.springsandbox.entity;
 
 import lombok.Data;
 
+/**
+ * 従業員 Entityクラス
+ */
 @Data
 public class Employees {
     /**
