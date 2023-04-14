@@ -54,7 +54,7 @@
 
 <section class="section">
     <div class="container">
-        <h2 class="title is-2">従業員情報</h2>
+        <h2 class="title is-2">現在の従業員情報</h2>
         <table class="table">
             <tbody>
             <tr>
@@ -83,13 +83,62 @@
             </tr>
             </tbody>
         </table>
-        <div class="field is-grouped">
-            <div class="control">
-                <button type="button" th:onclick="|location.href='${employee.id}/update'|" class="button is-link">
-                    従業員情報更新
-                </button>
+    </div>
+    <br>
+    <div class="container">
+        <h2 class="title is-2">更新後の従業員情報</h2>
+        <form method="POST" action="#" th:action="@{'/employee/' + ${employee.id}}">
+            <input type="hidden" name="id" th:value="${employee.id}"/>
+            <div class="field">
+                <label class="label">氏名</label>
+                <div class="control">
+                    <input class="input" type="text" name="name" th:value="${employee.name}" required>
+                </div>
             </div>
-        </div>
+            <div class="field">
+                <label class="label">住所</label>
+                <div class="control">
+                    <input class="input" type="text" name="address" th:value="${employee.address}"
+                           required>
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">メールアドレス</label>
+                <div class="control">
+                    <input class="input" type="text" name="email" th:value="${employee.email}"
+                           required>
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">電話番号</label>
+                <div class="control">
+                    <input class="input" type="text" name="phoneNumber" th:value="${employee.phoneNumber}"
+                           required>
+                </div>
+            </div>
+
+            <label class="label">所属部署</label>
+            <div class="control">
+                <div class="select">
+                    <select name="departmentId" required>
+                        <option value="">選択してください</option>
+                        <option th:each="department : ${departments}" th:value="${department.id}"
+                                th:text="${department.departmentName}"
+                                th:selected="${department.id == employee.departmentId}">
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="field is-grouped">
+                <div class="control">
+                    <button type="submit" class="button is-link">更新</button>
+                </div>
+                <div class="control">
+                    <a href="/employee" class="button is-text">キャンセル</a>
+                </div>
+            </div>
+        </form>
     </div>
 </section>
 <footer class="footer">
@@ -115,6 +164,12 @@
               });
             }
           });
+
+
+
+
+
+
 
 
 </script>

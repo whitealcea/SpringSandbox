@@ -10,5 +10,7 @@ public interface EmployeesMapper {
 
     void insertEmployee(Employees employees);
 
+    void updateEmployee(Employees employees);
+
     List<Employees> findAllEmployees();
 }
