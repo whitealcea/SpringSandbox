@@ -33,4 +33,9 @@ public class DepartmentsService {
         CustomDepartments department = customDepartmentsMapper.findDepartmentById(departmentId);
         return modelMapper.map(department, DepartmentDto.class);
     }
+
+    public void saveDepartment(DepartmentDto dto) {
+        Departments entity = modelMapper.map(dto, Departments.class);
+        departmentsMapper.insertDepartment(entity);
+    }
 }

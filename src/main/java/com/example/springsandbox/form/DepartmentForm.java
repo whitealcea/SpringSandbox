@@ -1,11 +1,9 @@
-package com.example.springsandbox.dto;
+package com.example.springsandbox.form;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
-public class DepartmentDto {
+public class DepartmentForm {
     /**
      * 部署ID
      **/
@@ -22,13 +20,5 @@ public class DepartmentDto {
      * 上司の名前
      **/
     private String supervisorName;
-    /**
-     * 所属する人数
-     **/
-    private Integer departmentPeople;
-    /**
-     * 従業員の名前
-     **/
-    private Integer employeeId;
 
 }
