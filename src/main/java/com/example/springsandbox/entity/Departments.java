@@ -20,8 +20,4 @@ public class Departments {
      * 上司の名前
      **/
     private String supervisorName;
-    /**
-     * 従業員の名前
-     **/
-    private Integer employeeId;
 }
