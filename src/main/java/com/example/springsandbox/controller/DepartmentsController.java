@@ -34,6 +34,23 @@ public class DepartmentsController {
         return "departments/detail";
     }
 
+    @GetMapping("/{departmentId}/update")
+    public String showUpdateDepartmentForm(@PathVariable Integer departmentId, Model model) {
+        DepartmentDto department = departmentService.getDepartmentDetail(departmentId);
+        model.addAttribute("department", department);
+        List<EmployeeDto> employeeList = employeeService.getEmployeeList();
+        model.addAttribute("employees", employeeList);
+        model.addAttribute("departmentUpdate", new DepartmentForm());
+        return "departments/update";
+    }
+
+    @PostMapping("/{departmentId}")
+    public String updateDepartment(@ModelAttribute("{department}") DepartmentForm form) {
+        DepartmentDto dto = modelMapper.map(form, DepartmentDto.class);
+        departmentService.updateDepartment(dto);
+        return "redirect:/department";
+    }
+
     @RequestMapping
     public String departments(Model model) {
         List<DepartmentDto> departmentList = departmentService.getDepartmentList();
