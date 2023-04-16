@@ -32,4 +32,12 @@ public class Employees {
      * 部署ID
      **/
     private Integer departmentId;
+    /**
+     * ユーザID
+     **/
+    private Integer userId;
+    /**
+     * パスワード
+     **/
+    private Integer password;
 }
