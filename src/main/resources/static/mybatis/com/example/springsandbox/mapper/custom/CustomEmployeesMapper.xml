@@ -2,7 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.springsandbox.mapper.custom.CustomEmployeesMapper">
     <select id="findAllEmployees" resultType="com.example.springsandbox.entity.custom.CustomEmployee">
-        select e.*, d.department_name from employees e inner join departments d on e.department_id = d.id;
+        select e.*, d.department_name,
+        sec_to_time(sum(time_to_sec(TIMEDIFF(a.end_time ,a.start_time)))) as sumWorkingTime
+        from employees e
+        inner join departments d
+        on e.department_id = d.id
+        left join attendance a
+        on e.id = a.employee_id
+        GROUP BY e.id;
     </select>
     <select id="findEmployeeById" parameterType="Integer"
             resultType="com.example.springsandbox.entity.custom.CustomEmployee">
