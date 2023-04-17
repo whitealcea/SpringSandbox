@@ -34,6 +34,23 @@ public class EmployeeController {
         return "employees/detail";
     }
 
+    @GetMapping("/{employeeId}/update")
+    public String showUpdateEmployeeForm(@PathVariable Integer employeeId, Model model) {
+        EmployeeDto employee = employeeService.getEmployeeDetail(employeeId);
+        model.addAttribute("employee", employee);
+        List<DepartmentDto> departmentList = departmentsService.getDepartmentList();
+        model.addAttribute("departments", departmentList);
+        model.addAttribute("employeeUpdate", new EmployeeForm());
+        return "employees/update";
+    }
+
+    @PostMapping("/{employeeId}")
+    public String updateEmployee(@ModelAttribute("{employee}") EmployeeForm form) {
+        EmployeeDto dto = modelMapper.map(form, EmployeeDto.class);
+        employeeService.updateEmployee(dto);
+        return "redirect:/employee";
+    }
+
     @RequestMapping
     public String employees(Model model) {
         List<EmployeeDto> employeeList = employeeService.getEmployeeList();

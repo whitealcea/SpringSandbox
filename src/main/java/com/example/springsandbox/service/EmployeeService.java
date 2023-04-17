@@ -37,4 +37,9 @@ public class EmployeeService {
         Employees entity = modelMapper.map(dto, Employees.class);
         employeesMapper.insertEmployee(entity);
     }
+
+    public void updateEmployee(EmployeeDto dto) {
+        Employees entity = modelMapper.map(dto, Employees.class);
+        employeesMapper.updateEmployee(entity);
+    }
 }

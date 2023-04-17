@@ -5,6 +5,10 @@ import lombok.Data;
 @Data
 public class EmployeeForm {
     /**
+     * 従業員ID
+     **/
+    private Integer id;
+    /**
      * 名前
      **/
     private String name;
