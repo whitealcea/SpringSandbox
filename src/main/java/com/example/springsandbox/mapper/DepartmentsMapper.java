@@ -9,5 +9,7 @@ import java.util.List;
 public interface DepartmentsMapper {
     void insertDepartment(Departments departments);
 
+    void updateDepartment(Departments departments);
+
     List<Departments> findAllDepartments();
 }

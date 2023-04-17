@@ -38,4 +38,9 @@ public class DepartmentsService {
         Departments entity = modelMapper.map(dto, Departments.class);
         departmentsMapper.insertDepartment(entity);
     }
+
+    public void updateDepartment(DepartmentDto dto) {
+        Departments entity = modelMapper.map(dto, Departments.class);
+        departmentsMapper.updateDepartment(entity);
+    }
 }

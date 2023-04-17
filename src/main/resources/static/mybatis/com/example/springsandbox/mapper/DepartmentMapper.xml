@@ -8,4 +8,10 @@
     <select id="findAllDepartments" resultType="com.example.springsandbox.entity.Departments">
         select * from departments;
     </select>
+    <update id="updateDepartment" parameterType="com.example.springsandbox.entity.Departments">
+        update departments
+        set department_name = #{departmentName}, department_number = #{departmentNumber}, supervisor_name =
+        #{supervisorName}
+        where id = #{id};
+    </update>
 </mapper>
