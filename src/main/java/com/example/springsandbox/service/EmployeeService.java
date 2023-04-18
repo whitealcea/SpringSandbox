@@ -49,7 +49,7 @@ public class EmployeeService {
                 }
                 Duration breakDuration = Duration.between(LocalTime.of(0, 0), breakTime);
                 workTimeOneday = workTimeOneday.minus(breakDuration);
-                workTimeSummary =workTimeSummary.plus(workTimeOneday);
+                workTimeSummary = workTimeSummary.plus(workTimeOneday);
             }
             long minutes = workTimeSummary.toMinutes();
             String result = String.format("%02d:%02d", minutes / 60, minutes % 60);
