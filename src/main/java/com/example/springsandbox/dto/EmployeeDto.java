@@ -37,5 +37,5 @@ public class EmployeeDto {
     /**
      * 総稼働時間
      **/
-    private String sumWorkingTime;
+    private String workingTimeSummary;
 }

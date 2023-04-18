@@ -10,4 +10,6 @@ public interface CustomEmployeesMapper {
     List<CustomEmployee> findAllEmployees();
 
     CustomEmployee findEmployeeById(Integer employeeId);
+
+    CustomEmployee getAttendanceById();
 }

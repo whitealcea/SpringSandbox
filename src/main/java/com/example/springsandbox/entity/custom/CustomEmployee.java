@@ -31,5 +31,5 @@ public class CustomEmployee {
     /**
      * 総稼働時間
      **/
-    private String sumWorkingTime;
+    private String workingTimeSummary;
 }
