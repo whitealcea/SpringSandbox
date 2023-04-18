@@ -1,55 +1,10 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="ja">
-<head>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/common_fragment :: common_header(~{::title}, ~{})">
     <meta charset="UTF-8">
-    <title>勤怠管理システム</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
-    <link rel="stylesheet" href="/css/main.css">
+    <title>勤怠管理システム - 従業員情報</title>
 </head>
 <body>
-<nav class="navbar is-dark" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand">
-        <a class="navbar-item" href="#">
-            <h1 class="title is-4">勤怠管理システム</h1>
-        </a>
-
-        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
-           data-target="navbarBasicExample">
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-        </a>
-    </div>
-
-    <div id="navbarBasicExample" class="navbar-menu">
-        <div class="navbar-start">
-            <a class="navbar-item" href="/">
-                ホーム
-            </a>
-
-            <a class="navbar-item" href="/attendance">
-                勤怠入力
-            </a>
-
-            <a class="navbar-item" href="/employee">
-                従業員一覧
-            </a>
-
-            <a class="navbar-item" href="/department">
-                部署一覧
-            </a>
-        </div>
-
-        <div class="navbar-end">
-            <div class="navbar-item">
-                <div class="buttons">
-                    <a class="button is-primary" href="#">
-                        <strong>ログイン</strong>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
+<nav th:replace="common/common_fragment :: common_nav('employee_nav')">
 </nav>
 
 <section class="section">
@@ -85,38 +40,14 @@
         </table>
         <div class="field is-grouped">
             <div class="control">
-                <button type="button" th:onclick="|location.href='${employee.id}/update'|" class="button is-link">
+                <button class="button is-link" th:onclick="|location.href='${employee.id}/update'|" type="button">
                     従業員情報更新
                 </button>
             </div>
         </div>
     </div>
 </section>
-<footer class="footer">
-    <div class="content has-text-centered">
-        <p>&copy; 2023 勤怠管理システム</p>
-    </div>
-</footer>
 
-<script>
-  // ナビゲーションバーアイテムの開閉
-  document
-          .addEventListener('DOMContentLoaded', () => {
-            // クリックイベントでメニューを開閉
-            const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
-            if ($navbarBurgers.length > 0) {
-              $navbarBurgers.forEach($el => {
-                $el.addEventListener('click', () => {
-                  const target = $el.dataset.target;
-                  const $target = document.getElementById(target);
-                  $el.classList.toggle('is-active');
-                  $target.classList.toggle('is-active');
-                });
-              });
-            }
-          });
-
-
-</script>
+<footer th:replace="common/common_fragment::common_footer"></footer>
 </body>
 </html>
