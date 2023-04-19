@@ -80,8 +80,8 @@ public class EmployeeService {
             AttendanceDto dto = new AttendanceDto();
 //            dateと一致するdateをAttendanceリストが持っていた場合、そのデータを入れる
             for (Attendance att : employeeAttendance) {
-                if (date == att.getDate()) {
-                    dto = modelMapper.map(employeeAttendance, AttendanceDto.class);
+                if (date.equals(att.getDate())) {
+                    dto = modelMapper.map(att, AttendanceDto.class);
 //                    稼働時間の計算
                     LocalTime endTime = att.getEndTime();
                     LocalTime startTime = att.getStartTime();
@@ -107,7 +107,7 @@ public class EmployeeService {
                     dto.setWorkingTime("00:00");
                 }
             }
-//           リストに1項目としていれる　List.add(dto)
+//           リストに1項目としていれる　list.add(dto)
             list.add(dto);
         }
         return list;
