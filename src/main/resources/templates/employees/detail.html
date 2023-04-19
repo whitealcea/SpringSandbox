@@ -83,6 +83,30 @@
             </tr>
             </tbody>
         </table>
+        <div class="container">
+            <h2 class="title is-2">勤怠情報</h2>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>日付</th>
+                    <th>出勤時刻</th>
+                    <th>退勤時刻</th>
+                    <th>休憩時間</th>
+                    <th>稼働時間</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="employeeAttendance : ${employeeAttendance}" th:data-id="${employeeAttendance.date}"
+                    class="employeeAttendance-row">
+                    <td th:text="${employeeAttendance.date}"></td>
+                    <td th:text="${employeeAttendance.startTime}"></td>
+                    <td th:text="${employeeAttendance.endTime}"></td>
+                    <td th:text="${employeeAttendance.breakTime}"></td>
+                    <td th:text="${employeeAttendance.workingTime}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
         <div class="field is-grouped">
             <div class="control">
                 <button type="button" th:onclick="|location.href='${employee.id}/update'|" class="button is-link">
@@ -115,6 +139,8 @@
               });
             }
           });
+
+
 
 
 </script>

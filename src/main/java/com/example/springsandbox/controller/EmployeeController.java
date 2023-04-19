@@ -1,5 +1,6 @@
 package com.example.springsandbox.controller;
 
+import com.example.springsandbox.dto.AttendanceDto;
 import com.example.springsandbox.dto.DepartmentDto;
 import com.example.springsandbox.dto.EmployeeDto;
 import com.example.springsandbox.form.EmployeeForm;
@@ -31,6 +32,9 @@ public class EmployeeController {
     public String employee(@PathVariable Integer employeeId, Model model) {
         EmployeeDto employee = employeeService.getEmployeeDetail(employeeId);
         model.addAttribute("employee", employee);
+//        取得したIDの従業員の勤怠情報を取得してHTMLに渡す
+        List<AttendanceDto> employeeAttendance = employeeService.getEmployeeAttendance(employeeId);
+        model.addAttribute("employeeAttendance", employeeAttendance);
         return "employees/detail";
     }
 
