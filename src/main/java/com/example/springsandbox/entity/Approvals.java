@@ -12,13 +12,13 @@ public class Approvals {
      */
     private Integer id;
     /**
-     * ユーザーID
+     * 従業員ID
      */
-    private Integer userId;
+    private Integer employeeId;
     /**
-     * 承認者ID
+     * 承認者従業員ID
      */
-    private Integer approverId;
+    private Integer approverEmployeeId;
     /**
      * 承認種別
      */

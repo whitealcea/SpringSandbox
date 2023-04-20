@@ -12,9 +12,9 @@ public class Holidays {
      */
     private Integer id;
     /**
-     * ユーザーID
+     * 従業員ID
      */
-    private Integer userId;
+    private Integer employeeId;
     /**
      * 休暇種別
      */

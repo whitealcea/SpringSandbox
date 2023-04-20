@@ -51,13 +51,14 @@ public class EmployeeService {
                 if (workTimeOneday.isNegative()) {
                     workTimeOneday = workTimeOneday.plusHours(24);
                 }
-                Duration breakDuration = Duration.between(LocalTime.of(0, 0), breakTime);
+                Duration breakDuration = Duration.between(LocalTime.MIN, breakTime);
                 workTimeOneday = workTimeOneday.minus(breakDuration);
                 workTimeSummary = workTimeSummary.plus(workTimeOneday);
             }
 //            表示方法を「〇〇：〇〇」に変換
             long minutes = workTimeSummary.toMinutes();
-            String result = String.format("%02d:%02d", minutes / 60, minutes % 60);
+            final int MINUTES_PER_HOUR = 60;
+            String result = String.format("%02d:%02d", minutes / MINUTES_PER_HOUR, minutes % MINUTES_PER_HOUR);
 //            名前とか住所とかを詰めてる「dto」にセッターで値をセット
             dto.setWorkingTimeSummary(result);
 //            名前とか色々（36行目）と、合計勤務時間(37～57行目)の値がdtoに入ったので、Listに1項目として詰める

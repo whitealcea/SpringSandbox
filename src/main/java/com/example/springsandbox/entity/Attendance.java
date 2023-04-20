@@ -15,9 +15,9 @@ public class Attendance {
      */
     private Integer id;
     /**
-     * ユーザーID
+     * 従業員ID
      */
-    private Integer userId;
+    private Integer employeeId;
     /**
      * 日付
      */
