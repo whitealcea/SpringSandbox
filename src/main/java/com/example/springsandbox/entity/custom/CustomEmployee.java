@@ -28,4 +28,8 @@ public class CustomEmployee {
      * 部署名
      **/
     private String departmentName;
+    /**
+     * 総稼働時間
+     **/
+    private String workingTimeSummary;
 }

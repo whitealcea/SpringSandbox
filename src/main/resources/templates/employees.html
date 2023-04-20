@@ -20,6 +20,7 @@
                 <th>電話番号</th>
                 <th>メールアドレス</th>
                 <th>所属部署</th>
+                <th>総稼働時間</th>
             </tr>
             </thead>
             <tbody>
@@ -30,6 +31,7 @@
                 <td th:text="${employee.phoneNumber}"></td>
                 <td th:text="${employee.email}"></td>
                 <td th:text="${employee.departmentName}"></td>
+                <td th:text="${employee.workingTimeSummary}"></td>
             </tr>
             </tbody>
         </table>
@@ -47,6 +49,9 @@
         .addEventListener('DOMContentLoaded', () => {
             addDetailLinkToRow('.employee-row', '/employee')
         });
+
+
+
 </script>
 </body>
 </html>
