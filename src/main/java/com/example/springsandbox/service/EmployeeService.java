@@ -47,12 +47,13 @@ public class EmployeeService {
                 if (workTimeOneday.isNegative()) {
                     workTimeOneday = workTimeOneday.plusHours(24);
                 }
-                Duration breakDuration = Duration.between(LocalTime.of(0, 0), breakTime);
+                Duration breakDuration = Duration.between(LocalTime.MIN, breakTime);
                 workTimeOneday = workTimeOneday.minus(breakDuration);
                 workTimeSummary = workTimeSummary.plus(workTimeOneday);
             }
             long minutes = workTimeSummary.toMinutes();
-            String result = String.format("%02d:%02d", minutes / 60, minutes % 60);
+            final int MINUTES_PER_HOUR = 60;
+            String result = String.format("%02d:%02d", minutes / MINUTES_PER_HOUR, minutes % MINUTES_PER_HOUR);
             dto.setWorkingTimeSummary(result);
             list.add(dto);
         }
