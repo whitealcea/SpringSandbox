@@ -33,7 +33,7 @@ public class EmployeeController {
         EmployeeDto employee = employeeService.getEmployeeDetail(employeeId);
         model.addAttribute("employee", employee);
 //        取得したIDの従業員の勤怠情報を取得してHTMLに渡す
-        String monthOfAttendance = "2023/02";
+        String monthOfAttendance = "2023/01";
         List<AttendanceDto> employeeAttendance = employeeService.getEmployeeAttendance(employeeId, monthOfAttendance);
         model.addAttribute("employeeAttendance", employeeAttendance);
         return "employees/detail";

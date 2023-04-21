@@ -44,26 +44,14 @@ public class EmployeeService {
 //            IDごとの勤怠情報リストから、1日ごとの勤務時間を算出する処理をリスト分繰り返し、合計勤務時間を算出する
             Duration workTimeSummary = Duration.ZERO;
             for (Attendance att : attendanceList) {
-//                まずはAttendanceに取得してあるデータを、ゲッターで使えるようにする
-                LocalTime endTime = att.getEndTime();
-                LocalTime startTime = att.getStartTime();
-                LocalTime breakTime = att.getBreakTime();
-//                「Duration」を使って1日ごとの勤務時間を算出し、最後に合計勤務時間に足して１ループが終わる
-                Duration workTimeOneday = Duration.between(startTime, endTime);
-                if (workTimeOneday.isNegative()) {
-                    workTimeOneday = workTimeOneday.plusHours(24);
-                }
-                Duration breakDuration = Duration.between(LocalTime.MIN, breakTime);
-                workTimeOneday = workTimeOneday.minus(breakDuration);
-                workTimeSummary = workTimeSummary.plus(workTimeOneday);
+                Duration workTimeOneDay = calculateWorkTimeOneDay(att);
+                workTimeSummary = workTimeSummary.plus(workTimeOneDay);
             }
 //            表示方法を「〇〇：〇〇」に変換
             long minutes = workTimeSummary.toMinutes();
             final int MINUTES_PER_HOUR = 60;
             String result = String.format("%02d:%02d", minutes / MINUTES_PER_HOUR, minutes % MINUTES_PER_HOUR);
-//            名前とか住所とかを詰めてる「dto」にセッターで値をセット
             dto.setWorkingTimeSummary(result);
-//            名前とか色々（36行目）と、合計勤務時間(37～57行目)の値がdtoに入ったので、Listに1項目として詰める
             list.add(dto);
         }
         return list;
@@ -93,7 +81,7 @@ public class EmployeeService {
             AttendanceDto dto = new AttendanceDto();
 
             dto.setDate(date);
-            LocalTime breakTime = LocalTime.of(00, 00);
+            LocalTime breakTime = LocalTime.of(0, 0);
             dto.setBreakTime(breakTime);
             dto.setWorkingTime("00:00");
 //            dateと一致するdateをAttendanceリストが持っていた場合、そのデータを入れる
@@ -101,25 +89,31 @@ public class EmployeeService {
                 if (date.equals(att.getDate())) {
                     dto = modelMapper.map(att, AttendanceDto.class);
 //                    稼働時間の計算
-                    LocalTime endTime = att.getEndTime();
-                    LocalTime startTime = att.getStartTime();
-                    breakTime = att.getBreakTime();
-                    Duration workTimeOneday = Duration.between(startTime, endTime);
-                    if (workTimeOneday.isNegative()) {
-                        workTimeOneday = workTimeOneday.plusHours(24);
-                    }
-                    Duration breakDuration = Duration.between(LocalTime.of(0, 0), breakTime);
-                    workTimeOneday = workTimeOneday.minus(breakDuration);
-                    long minutes = workTimeOneday.toMinutes();
-                    String result = String.format("%02d:%02d", minutes / 60, minutes % 60);
+                    Duration workTimeOneDay = calculateWorkTimeOneDay(att);
+                    long minutes = workTimeOneDay.toMinutes();
+                    final int MINUTES_PER_HOUR = 60;
+                    String result = String.format("%02d:%02d", minutes / MINUTES_PER_HOUR, minutes % MINUTES_PER_HOUR);
                     dto.setWorkingTime(result);
                     break;
                 }
             }
-//           リストに1項目としていれる　list.add(dto)
             list.add(dto);
         }
         return list;
+    }
+
+    public Duration calculateWorkTimeOneDay(Attendance att) {
+        LocalTime endTime = att.getEndTime();
+        LocalTime startTime = att.getStartTime();
+        LocalTime breakTime = att.getBreakTime();
+        Duration workTimeOneDay = Duration.between(startTime, endTime);
+        if (workTimeOneDay.isNegative()) {
+            final int dailyTime = 24;
+            workTimeOneDay = workTimeOneDay.plusHours(dailyTime);
+        }
+        Duration breakDuration = Duration.between(LocalTime.of(0, 0), breakTime);
+        workTimeOneDay = workTimeOneDay.minus(breakDuration);
+        return workTimeOneDay;
     }
 
     public void saveEmployee(EmployeeDto dto) {
