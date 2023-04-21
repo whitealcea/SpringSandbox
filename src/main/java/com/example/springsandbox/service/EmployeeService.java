@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,13 +74,28 @@ public class EmployeeService {
         return modelMapper.map(employee, EmployeeDto.class);
     }
 
-    public List<AttendanceDto> getEmployeeAttendance(Integer employeeId) {
+    public List<AttendanceDto> getEmployeeAttendance(Integer employeeId, String monthOfAttendance) {
         List<Attendance> employeeAttendance = attendanceMapper.getAttendanceByEmployeeId(employeeId);
         List<AttendanceDto> list = new ArrayList<>();
-//        ①4/1～4/30（当月）の1日から順に勤怠情報をセットする（とりあえず4月で30日までという前提）
-        for (Integer i = 1; i < 31; i++) {
-            LocalDate date = LocalDate.of(2023, 01, i);
+//        コントローラーから受け取った月の、1日から順に勤怠情報をセットする
+
+//        扱いやすいように、年+月を年+月+日(1)に変更(これしないとfor文の中の処理がわからなかった)
+        monthOfAttendance = monthOfAttendance + "/01";
+//        受け取った年/月/日をLocalDate型に変更(LocalDate型のメソッドを使って、月末日を出す為)
+        LocalDate targetMonth = LocalDate.parse(monthOfAttendance, DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+//        LocalDate型のメソッドを使って月末日を出す
+        LocalDate monthLastDay = targetMonth.with(TemporalAdjusters.lastDayOfMonth());
+//        monthLastDay(2023-01-31)のうち、末日の数字だけを抜き出してint型に(for文の繰り返し条件で使用)
+        int LastDayOfMonth = monthLastDay.getDayOfMonth();
+
+        for (int i = 0; i < LastDayOfMonth; i++) {
+            LocalDate date = targetMonth.plusDays(i);
             AttendanceDto dto = new AttendanceDto();
+
+            dto.setDate(date);
+            LocalTime breakTime = LocalTime.of(00, 00);
+            dto.setBreakTime(breakTime);
+            dto.setWorkingTime("00:00");
 //            dateと一致するdateをAttendanceリストが持っていた場合、そのデータを入れる
             for (Attendance att : employeeAttendance) {
                 if (date.equals(att.getDate())) {
@@ -86,7 +103,7 @@ public class EmployeeService {
 //                    稼働時間の計算
                     LocalTime endTime = att.getEndTime();
                     LocalTime startTime = att.getStartTime();
-                    LocalTime breakTime = att.getBreakTime();
+                    breakTime = att.getBreakTime();
                     Duration workTimeOneday = Duration.between(startTime, endTime);
                     if (workTimeOneday.isNegative()) {
                         workTimeOneday = workTimeOneday.plusHours(24);
@@ -97,15 +114,6 @@ public class EmployeeService {
                     String result = String.format("%02d:%02d", minutes / 60, minutes % 60);
                     dto.setWorkingTime(result);
                     break;
-                }
-//           一致しない場合は、出勤・退勤は空白、休憩・稼働は00：00になるようにする
-                else {
-                    dto.setDate(date);
-                    dto.setStartTime(null);
-                    dto.setEndTime(null);
-                    LocalTime breakTime = LocalTime.of(00, 00);
-                    dto.setBreakTime(breakTime);
-                    dto.setWorkingTime("00:00");
                 }
             }
 //           リストに1項目としていれる　list.add(dto)
