@@ -16,8 +16,8 @@ import org.springframework.stereotype.Service;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,9 +48,7 @@ public class EmployeeService {
                 workTimeSummary = workTimeSummary.plus(workTimeOneDay);
             }
 //            表示方法を「〇〇：〇〇」に変換
-            long minutes = workTimeSummary.toMinutes();
-            final int MINUTES_PER_HOUR = 60;
-            String result = String.format("%02d:%02d", minutes / MINUTES_PER_HOUR, minutes % MINUTES_PER_HOUR);
+            String result = durationToString(workTimeSummary);
             dto.setWorkingTimeSummary(result);
             list.add(dto);
         }
@@ -65,23 +63,13 @@ public class EmployeeService {
     public List<AttendanceDto> getEmployeeAttendance(Integer employeeId, String monthOfAttendance) {
         List<Attendance> employeeAttendance = attendanceMapper.getAttendanceByEmployeeId(employeeId);
         List<AttendanceDto> list = new ArrayList<>();
-//        コントローラーから受け取った月の、1日から順に勤怠情報をセットする
-
-//        扱いやすいように、年+月を年+月+日(1)に変更(これしないとfor文の中の処理がわからなかった)
-        monthOfAttendance = monthOfAttendance + "/01";
-//        受け取った年/月/日をLocalDate型に変更(LocalDate型のメソッドを使って、月末日を出す為)
-        LocalDate targetMonth = LocalDate.parse(monthOfAttendance, DateTimeFormatter.ofPattern("yyyy/MM/dd"));
-//        LocalDate型のメソッドを使って月末日を出す
-        LocalDate monthLastDay = targetMonth.with(TemporalAdjusters.lastDayOfMonth());
-//        monthLastDay(2023-01-31)のうち、末日の数字だけを抜き出してint型に(for文の繰り返し条件で使用)
-        int LastDayOfMonth = monthLastDay.getDayOfMonth();
-
-        for (int i = 0; i < LastDayOfMonth; i++) {
-            LocalDate date = targetMonth.plusDays(i);
+//        YearMonth型を使って、年/月から月末日と日付を出す
+        YearMonth targetYM = YearMonth.parse(monthOfAttendance, DateTimeFormatter.ofPattern("yyyy/MM"));
+        for (int i = 1; i <= targetYM.lengthOfMonth(); i++) {
+            LocalDate date = targetYM.atDay(i);
             AttendanceDto dto = new AttendanceDto();
-
             dto.setDate(date);
-            LocalTime breakTime = LocalTime.of(0, 0);
+            LocalTime breakTime = LocalTime.MIN;
             dto.setBreakTime(breakTime);
             dto.setWorkingTime("00:00");
 //            dateと一致するdateをAttendanceリストが持っていた場合、そのデータを入れる
@@ -90,9 +78,7 @@ public class EmployeeService {
                     dto = modelMapper.map(att, AttendanceDto.class);
 //                    稼働時間の計算
                     Duration workTimeOneDay = calculateWorkTimeOneDay(att);
-                    long minutes = workTimeOneDay.toMinutes();
-                    final int MINUTES_PER_HOUR = 60;
-                    String result = String.format("%02d:%02d", minutes / MINUTES_PER_HOUR, minutes % MINUTES_PER_HOUR);
+                    String result = durationToString(workTimeOneDay);
                     dto.setWorkingTime(result);
                     break;
                 }
@@ -111,9 +97,15 @@ public class EmployeeService {
             final int dailyTime = 24;
             workTimeOneDay = workTimeOneDay.plusHours(dailyTime);
         }
-        Duration breakDuration = Duration.between(LocalTime.of(0, 0), breakTime);
+        Duration breakDuration = Duration.between(LocalTime.MIN, breakTime);
         workTimeOneDay = workTimeOneDay.minus(breakDuration);
         return workTimeOneDay;
+    }
+
+    public String durationToString(Duration duration) {
+        long minutes = duration.toMinutes();
+        final int MINUTES_PER_HOUR = 60;
+        return String.format("%02d:%02d", minutes / MINUTES_PER_HOUR, minutes % MINUTES_PER_HOUR);
     }
 
     public void saveEmployee(EmployeeDto dto) {
