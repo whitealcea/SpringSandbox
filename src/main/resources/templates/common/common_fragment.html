@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head th:fragment="common_header(title, links)">
+    <meta charset="UTF-8">
+    <title th:replace="${title}">Dummy Title</title>
+
+    <!-- Common styles and scripts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <script rel="text/javascript" src="/scripts/common.js"></script>
+
+    <!--/* Per-page placeholder for additional links */-->
+    <th:block th:replace="${links}"/>
+</head>
+<body>
+<nav th:fragment="common_nav(activeNav)" class="navbar is-dark" role="navigation" aria-label="main navigation">
+    <input type="hidden" id="activeNav" th:value="${activeNav}">
+    <div class="navbar-brand">
+        <a class="navbar-item" href="/">
+            <h1 class="title is-4">勤怠管理システム</h1>
+        </a>
+
+        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
+           data-target="navbarBasicExample">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
+
+    <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+            <a class="navbar-item" id="home_nav" href="/">
+                ホーム
+            </a>
+            <a class="navbar-item" id="attendance_nav" href="/attendance">
+                勤怠入力
+            </a>
+            <a class="navbar-item" id="employee_nav" href="/employee">
+                従業員一覧
+            </a>
+            <a class="navbar-item" id="department_nav" href="/department">
+                部署一覧
+            </a>
+        </div>
+        <div class="navbar-end">
+            <div class="navbar-item">
+                <div class="buttons">
+                    <a class="button is-primary" href="#">
+                        <strong>ログイン</strong>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        const activeNav = document.getElementById("activeNav").value;
+        activateNav(activeNav);
+    </script>
+</nav>
+</body>
+<footer th:fragment="common_footer" class="footer">
+    <div class="content has-text-centered">
+        <p>&copy; 2023 勤怠管理システム</p>
+    </div>
+</footer>
+</html>

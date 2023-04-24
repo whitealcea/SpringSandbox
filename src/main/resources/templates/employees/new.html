@@ -1,81 +1,39 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="ja">
-<head>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/common_fragment :: common_header(~{::title}, ~{})">
     <meta charset="UTF-8">
-    <title>従業員登録</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
-    <link rel="stylesheet" href="/css/main.css" />
+    <title>勤怠管理システム - 従業員登録</title>
 </head>
 <body>
-<nav class="navbar is-dark" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand">
-        <a class="navbar-item" href="/">
-            <h1 class="title is-4">勤怠管理システム</h1>
-        </a>
-
-        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-        </a>
-    </div>
-
-    <div id="navbarBasicExample" class="navbar-menu">
-        <div class="navbar-start">
-            <a class="navbar-item" href="/">
-                ホーム
-            </a>
-
-            <a class="navbar-item" href="/attendance">
-                勤怠入力
-            </a>
-
-            <a class="navbar-item is-active" href="/employee">
-                従業員一覧
-            </a>
-
-            <a class="navbar-item" href="/department">
-                部署一覧
-            </a>
-        </div>
-
-        <div class="navbar-end">
-            <div class="navbar-item">
-                <div class="buttons">
-                    <a class="button is-primary" href="#">
-                        <strong>ログイン</strong>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
+<nav th:replace="common/common_fragment :: common_nav('employee_nav')">
 </nav>
+
 <section class="section">
     <div class="container">
         <h2 class="title is-2">従業員登録</h2>
-        <form method="POST" action="/employee">
+        <form action="/employee" method="POST">
             <div class="field">
                 <label class="label">名前</label>
                 <div class="control">
-                    <input class="input" type="text" name="name" required>
+                    <input class="input" name="name" required type="text">
                 </div>
             </div>
             <div class="field">
                 <label class="label">住所</label>
                 <div class="control">
-                    <input class="input" type="text" name="address" required>
+                    <input class="input" name="address" required type="text">
                 </div>
             </div>
             <div class="field">
                 <label class="label">メールアドレス</label>
                 <div class="control">
-                    <input class="input" type="email" name="email" required>
+                    <input class="input" name="email" required type="email">
                 </div>
             </div>
             <div class="field">
                 <label class="label">電話番号</label>
                 <div class="control">
-                    <input class="input" type="text" name="phoneNumber" required>
+                    <input class="input" name="phoneNumber" required type="text">
                 </div>
             </div>
             <div class="field">
@@ -84,26 +42,24 @@
                     <div class="select">
                         <select name="departmentId" required>
                             <option value="">選択してください</option>
-                            <option th:each="department : ${departments}" th:value="${department.id}" th:text="${department.departmentName}"></option>
+                            <option th:each="department : ${departments}" th:text="${department.departmentName}"
+                                    th:value="${department.id}"></option>
                         </select>
                     </div>
                 </div>
             </div>
             <div class="field is-grouped">
                 <div class="control">
-                    <button type="submit" class="button is-link">登録</button>
+                    <button class="button is-link" type="submit">登録</button>
                 </div>
                 <div class="control">
-                    <a href="/employee" class="button is-text">キャンセル</a>
+                    <a class="button is-text" href="/employee">キャンセル</a>
                 </div>
             </div>
         </form>
     </div>
 </section>
-<footer class="footer">
-    <div class="content has-text-centered">
-        <p>&copy; 2023 勤怠管理システム</p>
-    </div>
-</footer>
+
+<footer th:replace="common/common_fragment::common_footer"></footer>
 </body>
 </html>
