@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,26 +44,12 @@ public class EmployeeService {
 //            IDごとの勤怠情報リストから、1日ごとの勤務時間を算出する処理をリスト分繰り返し、合計勤務時間を算出する
             Duration workTimeSummary = Duration.ZERO;
             for (Attendance att : attendanceList) {
-//                まずはAttendanceに取得してあるデータを、ゲッターで使えるようにする
-                LocalTime endTime = att.getEndTime();
-                LocalTime startTime = att.getStartTime();
-                LocalTime breakTime = att.getBreakTime();
-//                「Duration」を使って1日ごとの勤務時間を算出し、最後に合計勤務時間に足して１ループが終わる
-                Duration workTimeOneday = Duration.between(startTime, endTime);
-                if (workTimeOneday.isNegative()) {
-                    workTimeOneday = workTimeOneday.plusHours(24);
-                }
-                Duration breakDuration = Duration.between(LocalTime.MIN, breakTime);
-                workTimeOneday = workTimeOneday.minus(breakDuration);
-                workTimeSummary = workTimeSummary.plus(workTimeOneday);
+                Duration workTimeOneDay = calculateWorkTimeOneDay(att);
+                workTimeSummary = workTimeSummary.plus(workTimeOneDay);
             }
 //            表示方法を「〇〇：〇〇」に変換
-            long minutes = workTimeSummary.toMinutes();
-            final int MINUTES_PER_HOUR = 60;
-            String result = String.format("%02d:%02d", minutes / MINUTES_PER_HOUR, minutes % MINUTES_PER_HOUR);
-//            名前とか住所とかを詰めてる「dto」にセッターで値をセット
+            String result = durationToString(workTimeSummary);
             dto.setWorkingTimeSummary(result);
-//            名前とか色々（36行目）と、合計勤務時間(37～57行目)の値がdtoに入ったので、Listに1項目として詰める
             list.add(dto);
         }
         return list;
@@ -72,46 +60,52 @@ public class EmployeeService {
         return modelMapper.map(employee, EmployeeDto.class);
     }
 
-    public List<AttendanceDto> getEmployeeAttendance(Integer employeeId) {
+    public List<AttendanceDto> getEmployeeAttendance(Integer employeeId, String monthOfAttendance) {
         List<Attendance> employeeAttendance = attendanceMapper.getAttendanceByEmployeeId(employeeId);
         List<AttendanceDto> list = new ArrayList<>();
-//        ①4/1～4/30（当月）の1日から順に勤怠情報をセットする（とりあえず4月で30日までという前提）
-        for (Integer i = 1; i < 31; i++) {
-            LocalDate date = LocalDate.of(2023, 01, i);
+//        YearMonth型を使って、年/月から月末日と日付を出す
+        YearMonth targetYM = YearMonth.parse(monthOfAttendance, DateTimeFormatter.ofPattern("yyyy/MM"));
+        for (int i = 1; i <= targetYM.lengthOfMonth(); i++) {
+            LocalDate date = targetYM.atDay(i);
             AttendanceDto dto = new AttendanceDto();
+            dto.setDate(date);
+            LocalTime breakTime = LocalTime.MIN;
+            dto.setBreakTime(breakTime);
+            dto.setWorkingTime("00:00");
 //            dateと一致するdateをAttendanceリストが持っていた場合、そのデータを入れる
             for (Attendance att : employeeAttendance) {
                 if (date.equals(att.getDate())) {
                     dto = modelMapper.map(att, AttendanceDto.class);
 //                    稼働時間の計算
-                    LocalTime endTime = att.getEndTime();
-                    LocalTime startTime = att.getStartTime();
-                    LocalTime breakTime = att.getBreakTime();
-                    Duration workTimeOneday = Duration.between(startTime, endTime);
-                    if (workTimeOneday.isNegative()) {
-                        workTimeOneday = workTimeOneday.plusHours(24);
-                    }
-                    Duration breakDuration = Duration.between(LocalTime.of(0, 0), breakTime);
-                    workTimeOneday = workTimeOneday.minus(breakDuration);
-                    long minutes = workTimeOneday.toMinutes();
-                    String result = String.format("%02d:%02d", minutes / 60, minutes % 60);
+                    Duration workTimeOneDay = calculateWorkTimeOneDay(att);
+                    String result = durationToString(workTimeOneDay);
                     dto.setWorkingTime(result);
                     break;
                 }
-//           一致しない場合は、出勤・退勤は空白、休憩・稼働は00：00になるようにする
-                else {
-                    dto.setDate(date);
-                    dto.setStartTime(null);
-                    dto.setEndTime(null);
-                    LocalTime breakTime = LocalTime.of(00, 00);
-                    dto.setBreakTime(breakTime);
-                    dto.setWorkingTime("00:00");
-                }
             }
-//           リストに1項目としていれる　list.add(dto)
             list.add(dto);
         }
         return list;
+    }
+
+    public Duration calculateWorkTimeOneDay(Attendance att) {
+        LocalTime endTime = att.getEndTime();
+        LocalTime startTime = att.getStartTime();
+        LocalTime breakTime = att.getBreakTime();
+        Duration workTimeOneDay = Duration.between(startTime, endTime);
+        if (workTimeOneDay.isNegative()) {
+            final int dailyTime = 24;
+            workTimeOneDay = workTimeOneDay.plusHours(dailyTime);
+        }
+        Duration breakDuration = Duration.between(LocalTime.MIN, breakTime);
+        workTimeOneDay = workTimeOneDay.minus(breakDuration);
+        return workTimeOneDay;
+    }
+
+    public String durationToString(Duration duration) {
+        long minutes = duration.toMinutes();
+        final int MINUTES_PER_HOUR = 60;
+        return String.format("%02d:%02d", minutes / MINUTES_PER_HOUR, minutes % MINUTES_PER_HOUR);
     }
 
     public void saveEmployee(EmployeeDto dto) {
