@@ -3,12 +3,14 @@ package com.example.springsandbox.controller;
 import com.example.springsandbox.dto.DepartmentDto;
 import com.example.springsandbox.dto.EmployeeDto;
 import com.example.springsandbox.form.EmployeeForm;
+import com.example.springsandbox.security.LoginEmployeeModel;
 import com.example.springsandbox.service.DepartmentsService;
 import com.example.springsandbox.service.EmployeeService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -71,5 +73,12 @@ public class EmployeeController {
         EmployeeDto dto = modelMapper.map(form, EmployeeDto.class);
         employeeService.saveEmployee(dto);
         return "redirect:/employee";
+    }
+
+    @GetMapping("/me")
+    public String me(@AuthenticationPrincipal LoginEmployeeModel auth, Model model) {
+        EmployeeDto employee = employeeService.getEmployeeDetail(auth.getLoginEmp().getId());
+        model.addAttribute("employee", employee);
+        return "employees/detail";
     }
 }

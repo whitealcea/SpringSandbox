@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="ja">
 <head th:fragment="common_header(title, links)">
     <meta charset="UTF-8">
     <title th:replace="${title}">Dummy Title</title>
 
     <!-- Common styles and scripts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="/css/main.css">
-    <script rel="text/javascript" src="/scripts/common.js"></script>
+    <script rel="text/javascript" src="/js/common.js"></script>
 
     <!--/* Per-page placeholder for additional links */-->
     <th:block th:replace="${links}"/>
@@ -45,10 +46,20 @@
         </div>
         <div class="navbar-end">
             <div class="navbar-item">
-                <div class="buttons">
-                    <a class="button is-primary" href="#">
-                        <strong>ログイン</strong>
-                    </a>
+                <div class="field is-grouped">
+                    <p class="control">
+                        <a class="button is-primary is-outlined" href="/employee/me">
+                              <span class="icon-text">
+                                <i class="mdi mdi-account"></i>
+                              </span>
+                            <span sec:authentication="principal.loginEmp.name"></span>
+                        </a>
+                    </p>
+                    <p class="control">
+                        <a class="button is-danger" href="/logout">
+                            <strong>ログアウト</strong>
+                        </a>
+                    </p>
                 </div>
             </div>
         </div>
