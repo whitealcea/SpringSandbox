@@ -42,4 +42,8 @@ public class Attendance {
      * 早退時間
      */
     private LocalTime leaveEarlyTime;
+    /**
+     * 備考
+     */
+    private String memo;
 }

@@ -13,4 +13,6 @@ public interface EmployeesMapper {
     void updateEmployee(Employees employees);
 
     List<Employees> findAllEmployees();
+
+    Employees findByUserId(String userId);
 }

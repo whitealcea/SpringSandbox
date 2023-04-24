@@ -35,9 +35,9 @@ public class Employees {
     /**
      * ユーザID
      **/
-    private Integer userId;
+    private String userId;
     /**
      * パスワード
      **/
-    private Integer password;
+    private String password;
 }

@@ -8,6 +8,9 @@
     <select id="findAllEmployees" resultType="com.example.springsandbox.entity.Employees">
         select * from employees;
     </select>
+    <select id="findByUserId" parameterType="String" resultType="com.example.springsandbox.entity.Employees">
+        select * from employees where user_id = #{userId};
+    </select>
     <update id="updateEmployee" parameterType="com.example.springsandbox.entity.Employees">
         update employees
         set name = #{name},
