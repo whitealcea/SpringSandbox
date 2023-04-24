@@ -17,7 +17,6 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.YearMonth;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,11 +59,11 @@ public class EmployeeService {
         return modelMapper.map(employee, EmployeeDto.class);
     }
 
-    public List<AttendanceDto> getEmployeeAttendance(Integer employeeId, String monthOfAttendance) {
+    public List<AttendanceDto> getEmployeeAttendance(Integer employeeId, @NonNull String monthOfAttendance) {
         List<Attendance> employeeAttendance = attendanceMapper.getAttendanceByEmployeeId(employeeId);
         List<AttendanceDto> list = new ArrayList<>();
 //        YearMonth型を使って、年/月から月末日と日付を出す
-        YearMonth targetYM = YearMonth.parse(monthOfAttendance, DateTimeFormatter.ofPattern("yyyy/MM"));
+        YearMonth targetYM = YearMonth.parse(monthOfAttendance);
         for (int i = 1; i <= targetYM.lengthOfMonth(); i++) {
             LocalDate date = targetYM.atDay(i);
             AttendanceDto dto = new AttendanceDto();
