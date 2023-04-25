@@ -1,5 +1,6 @@
 package com.example.springsandbox.service;
 
+import com.example.springsandbox.dto.AttendanceDto;
 import com.example.springsandbox.dto.EmployeeDto;
 import com.example.springsandbox.entity.Attendance;
 import com.example.springsandbox.entity.Employees;
@@ -73,5 +74,22 @@ public class EmployeeService {
     public void updateEmployee(EmployeeDto dto) {
         Employees entity = modelMapper.map(dto, Employees.class);
         employeesMapper.updateEmployee(entity);
+    }
+
+    public void registrationAttendance(AttendanceDto dto){
+//        カラムの値がnullだとエラーが出るので、nullだった場合に00：00が入るようにした。
+        LocalTime lateTime = dto.getLateTime();
+//        nullとの比較に「.equal()」は使えなかったので、「==」を使用。
+        if(lateTime == null){
+            lateTime = LocalTime.MIDNIGHT;
+            dto.setLateTime(lateTime);
+        }
+        LocalTime leaveEarlyTime = dto.getLeaveEarlyTime();
+        if(leaveEarlyTime == null){
+            leaveEarlyTime = LocalTime.MIDNIGHT;
+            dto.setLeaveEarlyTime(leaveEarlyTime);
+        }
+        Attendance entity = modelMapper.map(dto, Attendance.class);
+        attendanceMapper.registrationAttendance(entity);
     }
 }

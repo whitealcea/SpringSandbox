@@ -68,6 +68,8 @@
         const activeNav = document.getElementById("activeNav").value;
         activateNav(activeNav);
     </script>
+    <input type="hidden" id="_hiddenCsrfName" th:value="${_csrf.parameterName}">
+    <input type="hidden" id="_hiddenCsrfToken" th:value="${_csrf.token}">
 </nav>
 </body>
 <footer th:fragment="common_footer" class="footer">

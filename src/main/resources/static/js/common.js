@@ -13,6 +13,13 @@ document
                 });
             });
         }
+        // formタグにCSRFトークンを設定
+        const csrfInput = document.createElement("input")
+        csrfInput.name = document.querySelector("#_hiddenCsrfName").value;
+        csrfInput.value = document.querySelector("#_hiddenCsrfToken").value;
+        csrfInput.type = "hidden";
+        document.querySelectorAll("form")
+            .forEach(f => f.appendChild(csrfInput))
     });
 
 function activateNav(activeNav) {
