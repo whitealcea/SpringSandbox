@@ -11,38 +11,41 @@
 <section class="section">
     <div class="container">
         <h2 class="title is-2">勤怠入力</h2>
-        <form>
+        <form action="/attendance" method="POST">
             <div class="field">
                 <label class="label">日付</label>
                 <div class="control">
-                    <input class="input" placeholder="日付" type="date">
+                    <input class="input" placeholder="日付" type="date" name="date">
                 </div>
             </div>
 
             <div class="field">
                 <label class="label">出勤時刻</label>
                 <div class="control">
-                    <input class="input" placeholder="出勤時刻" type="time">
+                    <input class="input" placeholder="出勤時刻" type="time" name="startTime">
                 </div>
             </div>
 
             <div class="field">
                 <label class="label">退勤時刻</label>
                 <div class="control">
-                    <input class="input" placeholder="退勤時刻" type="time">
+                    <input class="input" placeholder="退勤時刻" type="time" name="endTime">
                 </div>
             </div>
 
             <div class="field">
                 <label class="label">備考</label>
                 <div class="control">
-                    <textarea class="textarea" placeholder="備考"></textarea>
+                    <textarea class="textarea" placeholder="備考" name="memo"></textarea>
                 </div>
             </div>
 
-            <div class="field">
+            <div class="field is-grouped">
                 <div class="control">
-                    <button class="button is-primary">登録</button>
+                    <button class="button is-link" type="submit">登録</button>
+                </div>
+                <div class="control">
+                    <a class="button is-text" href="/attendance">キャンセル</a>
                 </div>
             </div>
         </form>

@@ -7,4 +7,8 @@
         from attendance
         where employee_id = #{employeeId};
     </select>
+    <insert id="registrationAttendance" parameterType="com.example.springsandbox.entity.Attendance">
+        insert into attendance (employee_id, date, start_time, end_time, memo)
+        values (#{employeeId}, #{date}, #{startTime}, #{endTime}, #{memo});
+    </insert>
 </mapper>

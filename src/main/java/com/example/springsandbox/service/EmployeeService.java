@@ -1,5 +1,6 @@
 package com.example.springsandbox.service;
 
+import com.example.springsandbox.dto.AttendanceDto;
 import com.example.springsandbox.dto.EmployeeDto;
 import com.example.springsandbox.entity.Attendance;
 import com.example.springsandbox.entity.Employees;
@@ -73,5 +74,10 @@ public class EmployeeService {
     public void updateEmployee(EmployeeDto dto) {
         Employees entity = modelMapper.map(dto, Employees.class);
         employeesMapper.updateEmployee(entity);
+    }
+
+    public void registrationAttendance(AttendanceDto dto){
+        Attendance entity = modelMapper.map(dto, Attendance.class);
+        attendanceMapper.registrationAttendance(entity);
     }
 }
