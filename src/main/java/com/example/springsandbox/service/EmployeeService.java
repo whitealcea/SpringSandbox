@@ -77,6 +77,18 @@ public class EmployeeService {
     }
 
     public void registrationAttendance(AttendanceDto dto){
+//        カラムの値がnullだとエラーが出るので、nullだった場合に00：00が入るようにした。
+        LocalTime lateTime = dto.getLateTime();
+//        nullとの比較に「.equal()」は使えなかったので、「==」を使用。
+        if(lateTime == null){
+            lateTime = LocalTime.MIDNIGHT;
+            dto.setLateTime(lateTime);
+        }
+        LocalTime leaveEarlyTime = dto.getLeaveEarlyTime();
+        if(leaveEarlyTime == null){
+            leaveEarlyTime = LocalTime.MIDNIGHT;
+            dto.setLeaveEarlyTime(leaveEarlyTime);
+        }
         Attendance entity = modelMapper.map(dto, Attendance.class);
         attendanceMapper.registrationAttendance(entity);
     }
