@@ -9,11 +9,13 @@ import com.example.springsandbox.service.EmployeeService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.YearMonth;
 import java.util.List;
 
 @Controller
@@ -21,6 +23,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class EmployeeController {
+    public static final String YEAR_MONTH_REGEX = "^20[0-9]{2}-(0[1-9]|1[0-2])$";
     @NonNull
     private EmployeeService employeeService;
     @NonNull
@@ -28,14 +31,17 @@ public class EmployeeController {
     @NonNull
     private ModelMapper modelMapper;
 
-    @RequestMapping("/{employeeId}")
-    public String employee(@PathVariable Integer employeeId, Model model) {
+    @GetMapping("/{employeeId}")
+    public String employee(@PathVariable Integer employeeId, @RequestParam(name = "target_ym", required = false) String targetYM, Model model) {
+        if (StringUtils.isEmpty(targetYM) || !targetYM.matches(YEAR_MONTH_REGEX)) {
+            targetYM = YearMonth.now().toString();
+        }
         EmployeeDto employee = employeeService.getEmployeeDetail(employeeId);
         model.addAttribute("employee", employee);
 //        取得したIDの従業員の勤怠情報を取得してHTMLに渡す
-        String monthOfAttendance = "2023/01";
-        List<AttendanceDto> employeeAttendance = employeeService.getEmployeeAttendance(employeeId, monthOfAttendance);
+        List<AttendanceDto> employeeAttendance = employeeService.getEmployeeAttendance(employeeId, targetYM);
         model.addAttribute("employeeAttendance", employeeAttendance);
+        model.addAttribute("targetYM", targetYM);
         return "employees/detail";
     }
 

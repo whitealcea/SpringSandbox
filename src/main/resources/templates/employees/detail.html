@@ -40,6 +40,14 @@
         </table>
         <div class="container">
             <h2 class="title is-2">勤怠情報</h2>
+            <div class="field has-addons">
+                <div class="control">
+                    <input class="input" type="month" id="targetYM" min="2018-01" th:value="${targetYM}">
+                </div>
+                <div class="control">
+                <a class="button is-info" onclick="getTargetYMAttendance()">表示</a>
+                </div>
+            </div>
             <table class="table">
                 <thead>
                 <tr>
@@ -71,6 +79,15 @@
         </div>
     </div>
 </section>
+
+<script th:inline="javascript">
+    function getTargetYMAttendance() {
+        const empId = /*[[${employee.id}]]*/0;
+        const selectYM = document.querySelector('#targetYM').value;
+        location.href=`/employee/${empId}?target_ym=${selectYM}`;
+    }
+
+</script>
 
 <footer th:replace="common/common_fragment::common_footer"></footer>
 </body>
